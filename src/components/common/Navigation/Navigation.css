@@ -1,0 +1,35 @@
+.nav-bar {
+    border: 1px solid black;
+    padding: 10px;
+}
+
+.nav-bar {
+    color: #E0E0E0;
+}
+
+.add-employee-div {
+    width: 230px;
+    position: absolute;
+    right: 10px;
+    top: 15px;
+}
+
+
+@media screen and (max-width: 768px) {
+    .hide-on-mobile-view {
+        display: none;
+    }
+
+    .add-employee-btn {
+        float: right;
+        position: relative;
+        right: 170px;
+    }
+
+    .add-employee-div {
+        position: absolute;
+        right: -300px;
+        top: -50px;
+        width: 10px;
+    }
+}

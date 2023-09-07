@@ -11,3 +11,36 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.primary-text-col {
+  color: #283856 !important;
+}
+
+.primary-bg-col {
+  background-color: #283856 !important;
+}
+
+.secondary-bg-col {
+  background-color: #D9D9D9 !important;
+}
+
+.show-on-mobile-view {
+  display: inline-block;
+  visibility: hidden;
+}
+
+.cursor-pointer:hover {
+  cursor: pointer;
+}
+
+@media screen and (max-width: 768px) {
+  .hide-on-mobile-view {
+    display: none;
+    visibility: hidden;
+  }
+
+  .show-on-mobile-view {
+    display: inline-block;
+    visibility: visible;
+  }
+}

@@ -1,0 +1,8 @@
+.card-icons {
+    position: relative;
+    float: right;
+    top: -80px;
+    right: 10px;
+    background-color: transparent !important;
+    box-shadow: none !important;
+}
