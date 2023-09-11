@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  sequelize:
+    image: sequelize:0.0.1
+    build:
+      context: https://github.com/weijiepris/Mavericks.git#main
+    restart: always
+    networks:
+      - employeeAPI
+    ports:
+      - "3001:3000"
+    depends_on:
+      - db
+
+  db:
+    container_name: emp_api_db
+    image: 'postgres:14'
+    ports:
+      - "5433:5432"
+    networks:
+      - employeeAPI
+    environment:
+      - POSTGRES_PASSWORD=1234
+      - POSTGRES_DB=weijie-mavericks
+      - POSTGRES_USER=postgres
+    volumes:
+      - emp_data:/var/lib/postgresql/data
+
+volumes:
+  emp_data: {}
+
+networks:
+  employeeAPI:

@@ -1,6 +1,6 @@
 import { FC, useState } from 'react'
 import ReuseableCard from '../../common/ResuableCard/ReusableCard'
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Typography } from '@mui/material'
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Snackbar, Typography } from '@mui/material'
 import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
 import DeleteIcon from '@mui/icons-material/Delete';
 
@@ -8,12 +8,16 @@ import "./EmployeeCard.css"
 import { useNavigate } from 'react-router-dom';
 
 export interface EmployeeCardProps {
-    id: number
+    id: number,
+    name: string,
+    salary: number,
+    department: 'HR' | 'PS'
 }
 
 const EmployeeCard: FC<{ card: EmployeeCardProps, onDelete: Function }> = ({ card, onDelete }) => {
     const [open, setOpen] = useState<boolean>(false)
     const [dialogMessage, setDialogMessage] = useState<string>("");
+    const [snackbar, setSnackbar] = useState<boolean>(false);
 
     const navigate = useNavigate();
 
@@ -37,13 +41,21 @@ const EmployeeCard: FC<{ card: EmployeeCardProps, onDelete: Function }> = ({ car
     const onConfirmDelete = () => {
         onDelete(card)
         handleCloseDialog()
+        handleOpenSnackbar();
+    }
+
+    const handleOpenSnackbar = () => {
+        setSnackbar(true);
+    }
+    const handleCloseSnackbar = () => {
+        setSnackbar(false);
     }
 
     return (<>
         <ReuseableCard className="secondary-bg-col flex-item" style={{ padding: '10px' }}>
-            <Typography variant="h4" className="primary-text-col">Name 1</Typography>
-            <Typography variant="h6" className="primary-text-col">HR</Typography>
-            <Typography variant="h6" className="primary-text-col">$1000</Typography>
+            <Typography variant="h4" className="primary-text-col">{card.name}</Typography>
+            <Typography variant="h6" className="primary-text-col">{card.department}</Typography>
+            <Typography variant="h6" className="primary-text-col">${card.salary}</Typography>
 
             <ReuseableCard className="card-icons">
                 <ModeEditOutlineIcon sx={{ color: 'orange', padding: '10px' }}
@@ -65,6 +77,8 @@ const EmployeeCard: FC<{ card: EmployeeCardProps, onDelete: Function }> = ({ car
                 </DialogActions>
             </DialogContent>
         </Dialog>
+        <Snackbar open={snackbar} autoHideDuration={3000} onClose={handleCloseSnackbar}
+            message="Employee Deleted" />
     </>
     )
 }
