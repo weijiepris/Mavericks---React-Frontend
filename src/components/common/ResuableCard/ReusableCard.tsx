@@ -6,11 +6,12 @@ interface ReusableCardProps {
     children: ReactNode;
     style?: CSSProperties;
     className?: string;
+    onClick?: Function
 }
 
-const ReusableCard: FC<ReusableCardProps> = ({ children, className, style }) => {
+const ReusableCard: FC<ReusableCardProps> = ({ children, className, style, onClick }) => {
     return (
-        <Card className={className} style={style}>{children}</Card >
+        <Card className={className} style={style} onClick={() => onClick}>{children}</Card >
     )
 }
 

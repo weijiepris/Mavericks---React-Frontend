@@ -35,7 +35,7 @@ const EmployeeCard: FC<{ card: EmployeeCardProps, onDelete: Function }> = ({ car
     }
 
     const onEdit = () => {
-        navigate("/Add")
+        navigate("/Employee", { state: card })
     }
 
     const onConfirmDelete = () => {
@@ -51,8 +51,10 @@ const EmployeeCard: FC<{ card: EmployeeCardProps, onDelete: Function }> = ({ car
         setSnackbar(false);
     }
 
+
     return (<>
-        <ReuseableCard className="secondary-bg-col flex-item" style={{ padding: '10px' }}>
+        <ReuseableCard className="secondary-bg-col flex-item" style={{ padding: '10px' }}
+            onClick={() => console.log(card)}>
             <Typography variant="h4" className="primary-text-col">{card.name}</Typography>
             <Typography variant="h6" className="primary-text-col">{card.department}</Typography>
             <Typography variant="h6" className="primary-text-col">${card.salary}</Typography>

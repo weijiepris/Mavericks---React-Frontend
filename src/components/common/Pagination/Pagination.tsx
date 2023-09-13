@@ -95,7 +95,6 @@ const Pagination: FC<PaginationProps> = ({ items, rowsPerPage, showItem }) => {
                             <span className='primary-text-col page-number'>{currentPage}</span>
                             <Button disabled={currentPage === Math.ceil(baseItems!.length / rowsPerPage) || baseItems.length === 0} onClick={() => handleNextPage()}>Next</Button>
                         </span>
-
                     </ReusableCard>
                 </ReusableCard>
             </ReusableCard>

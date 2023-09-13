@@ -1,4 +1,4 @@
-export const validateEmployee = (name: string, salary: any, department: string): Promise<boolean> => {
+export const validateEmployee = (name: string, salary: any, departmentId: number): Promise<boolean> => {
     return new Promise((resolve, reject) => {
         if (!name)
             reject("Name cannot be empty");
@@ -18,7 +18,7 @@ export const validateEmployee = (name: string, salary: any, department: string):
             reject("Salary cannot be negative");
         }
 
-        if (!department || department === "")
+        if (!departmentId || departmentId === -1)
             reject("You have not selected a department");
 
         resolve(true);

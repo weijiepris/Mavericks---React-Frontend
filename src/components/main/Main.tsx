@@ -1,14 +1,15 @@
-import { FC, useEffect, useState, } from 'react'
+import { FC, useCallback, useEffect, useState, } from 'react'
 import EmployeeCard, { EmployeeCardProps } from '../employee/EmployeeCard/EmployeeCard';
 import "./Main.css"
 import Pagination from '../common/Pagination/Pagination';
 import ReusableCard from '../common/ResuableCard/ReusableCard';
 import { useSelector, useDispatch } from 'react-redux';
-import { EmployeeCardInterface, InitialEmployeesState, } from '../../store';
 import { Dispatch } from 'redux';
-import { CONSTANTS } from '../../constants';
 import { v4 as uuidv4 } from 'uuid';
-import { fetchAllEmployee } from '../actions';
+import { deleteEmployeeById, fetchAllDepartment, fetchAllEmployee } from '../actions';
+import { employeeActions } from '../../store/store';
+import { EmployeeCardInterface } from '../../store/model';
+import { useLocation } from 'react-router-dom';
 
 const Main: FC = () => {
   // const items: EmployeeCardInterface[] = [
@@ -27,9 +28,23 @@ const Main: FC = () => {
   // ]
   // const [items, setItems] = useState<any[]>([{ id: 0 }, { id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 }, { id: 6 }, { id: 7 }, { id: 8 }, { id: 9 }, { id: 10 }, { id: 11 }]);
   const [cards, setCards] = useState<EmployeeCardProps[]>([])
+  const authenticated = useSelector((state: any) => state.auth.isAuthenticated)
 
-  const employees: EmployeeCardInterface[] = useSelector((state: InitialEmployeesState) => state.employees);
+  const employees: EmployeeCardInterface[] = useSelector((state: any) => state.employee.data);
   const dispatch: Dispatch = useDispatch();
+
+  const handleFetchAllEmployees = useCallback(async () => {
+    try {
+      const response = await fetchAllEmployee();
+      const employees = response.data;
+      dispatch(employeeActions.setEmployee(employees));
+    } catch (error) {
+      console.error('Error fetching employees:', error);
+    }
+    return (() => {
+      setCards([])
+    })
+  }, [dispatch]);
 
   useEffect(() => {
     handleFetchAllEmployees();
@@ -37,38 +52,28 @@ const Main: FC = () => {
     return (() => {
       setCards([])
     })
-  }, [])
-
-
-  useEffect(() => {
-  }, [cards])
-
-
-  const handleFetchAllEmployees = async () => {
-    const employees = await fetchAllEmployee().then(res => res.data);
-    employeesHandler(employees)
-  }
-
-  const employeesHandler = (payload: EmployeeCardInterface[]) => {
-    dispatch({ type: CONSTANTS.SET_ALL, payload });
-  }
+  }, [handleFetchAllEmployees])
 
   const handlePageChange = (incomingItem: EmployeeCardProps[]) => {
-
     setCards(incomingItem)
   }
 
-  const handleDeleteCard = (card: EmployeeCardProps) => {
+  const handleDeleteCard = async (card: EmployeeCardProps) => {
     const { id } = card;
 
-    // let tempCards = items.filter(c => c.id !== id);
-    // setItems(tempCards);
+    const response = await deleteEmployeeById(id);
+
+    if (response.status === 204)
+      handleFetchAllEmployees();
   }
 
   return (
     <>
       <ReusableCard className="flex-container" style={{ boxShadow: "none" }}>
-        {cards.length > 0 && cards.map((card: EmployeeCardProps) => (<EmployeeCard key={uuidv4()} card={card} onDelete={handleDeleteCard} />))}
+        {!authenticated && <div>You are not authenticated</div>}
+
+        {authenticated && cards.length > 0 && cards.map((card: EmployeeCardProps) => (<EmployeeCard key={uuidv4()} card={card} onDelete={handleDeleteCard} />))}
+
       </ReusableCard>
       <Pagination items={employees} rowsPerPage={10} showItem={handlePageChange} />
     </>
