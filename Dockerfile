@@ -11,10 +11,10 @@ COPY package*.json ./
 RUN npm install
 
 # Copy the entire application to the container
-COPY . ./
+COPY . .
 
-# Expose the port on which your Express application listens
-EXPOSE 3000
+# Build the React app
+RUN npm run build
 
-# Set the command to start the Express application
+# Set the command to start the React app
 CMD [ "npm", "start" ]

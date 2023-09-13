@@ -12,7 +12,6 @@ services:
       - "3001:3001"
     depends_on:
       - db
-      
   react:
     image: react:0.0.1
     build:
@@ -24,7 +23,6 @@ services:
       - "3000:3000"
     depends_on:
       - db
-
   db:
     container_name: emp_api_db
     image: 'postgres:14'
